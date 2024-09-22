@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <link rel="stylesheet" href="/static/style.css" />
+
+    <style>
+      ul li {
+        width: 300px;
+        height: 70px;
+
+        list-style-type: none;
+      }
+      div p {
+        padding: 10px 10px 10px 10px;
+      }
+      ul:nth-child(odd) {
+        background: rgba(0, 139, 245, 0.2);
+      }
+      ul:nth-child(even) {
+        background: rgba(0, 139, 245, 0.1);
+      }
+      :visited {
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      style="
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        top: 33%;
+
+        left: 0%;
+        z-index: 0;
+      "
+    >
+      <img
+        style="
+          width: 95%;
+          border-radius: 20px;
+          height: 2000px;
+          box-shadow: 0 3px 16px 0 rgba(4, 31, 116, 0.1);
+        "
+        src="/static/images/Screenshot 2023-11-26 143001.png"
+        alt=""
+      />
+    </div>
+
+    <header class="header">
+      <button class="nieuwe_notitie">
+        <a href="/notitie-maken">nieuwe notitie</a>
+      </button>
+      {% extends 'navbar.html' %}
+      {% block title %}Categorie{% endblock %}
+      {% block content %}   
+    </header>
+    {%block note_list%} {%endblock%} {%block searchbar%} {%endblock%}
+    <form action="/notities-lijst" method="POST">
+      <section>
+        <p style="position: absolute; top: 250px; left: 80px">Pagina:</p>
+        <button
+          style="
+            position: absolute;
+            top: 270px;
+            left: 90px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+          "
+          type="submit"
+          name="page_number"
+          value="{{previous_page}}"
+          ,
+          {{hide_previous_button}}
+        >
+          &lt;
+        </button>
+        <p style="position: absolute; top: 275px; left: 105px">
+          {{current_page}}
+        </p>
+        <button
+          style="
+            position: absolute;
+            top: 270px;
+            left: 120px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+          "
+          type="submit"
+          name="page_number"
+          value="{{next_page}}"
+          ,
+          {{hide_next_button}}
+        >
+          &gt;
+        </button>
+        {% endblock %} 
+      </section>
+    </form>
+  </body>
+</html>

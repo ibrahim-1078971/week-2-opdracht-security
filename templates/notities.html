@@ -1,0 +1,139 @@
+{% extends 'note_list_base.html' %} {%block note_list%}
+<section class="note_list">
+  {%for note in notes%}
+  <ul style="color: black; position: relative; top: -70px; border-radius: 16px">
+    <li style="padding: 10px">
+      Titel: {{note[1]}}<br /><br />
+      Gemaakt door: {{note[2]}}<br /><br />
+      Categorie: {{note[3]}}<br /><br />
+      Aanmaak datum: <br />
+      {{note[4]}}
+    </li>
+
+    <li style="position: relative; top: -60px; left: 400px; width: 500px">
+      notitie: <br />{{note[5]}}
+    </li>
+    <li style="width: 70px; position: relative; left: 90%; top: -75px">
+      <form action="/notities-lijst" , method="POST">
+        <button
+          value="{{note.note_id}}"
+          name="detail"
+          style="
+            background: #4ad866;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            display: inline-block;
+            font-size: 12 px;
+            margin: 4px 2px;
+            cursor: pointer;
+            position: relative;
+            left: 8px;
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+          "
+        >
+          details
+        <button
+          value="{{note.note_id}}"
+          name="edit"
+          style="
+            background: #4ad866;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            display: inline-block;
+            font-size: 12 px;
+            margin: 4px 2px;
+            cursor: pointer;
+            position: relative;
+            left: 8px;
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+          "
+        >
+          edit
+        </button>
+        </button>
+      </form>
+    </li>
+  </ul>
+  {%endfor%}
+</section>
+{%endblock%} {%block searchbar%}
+<div class="notities_searchbar">
+  <form
+    action="/notities-lijst"
+    method="POST"
+    style="display: flex; height: 80%"
+  >
+    <section style="display: flex">
+      <p style="position: relative; top: 15px">
+        titel
+        <input
+          type="text"
+          name="title"
+          style="
+            border: 1px solid blue;
+            border-radius: 15px;
+            height: 45px;
+            width: 250px;
+            border-style: solid;
+            font-size: larger;
+          "
+        />
+      </p>
+    </section>
+    <section>
+      <p>categorien</p>
+      <select name="subject" class="select">
+        <option>alle categorien</option>
+        {%for category in categories%}
+        <option>{{category[0]}}</option>
+
+        {%endfor%}
+      </select>
+    </section>
+
+    <section>
+      <p>docenten</p>
+      <select name="teachers" class="select">
+        <option>alle docenten</option>
+        {% for teacher in teachers %}
+            <option>{{ teacher[1] }}</option>
+        {% endfor %}
+    </select>
+    </section>
+
+    <input
+      type="submit"
+      value="Zoeken"
+      class="submit-button"
+      style="top: 20px"
+    />
+  </form>
+  <section style="position: relative; left: 4%">
+    <a
+      href="/mijn-notities"
+      style="
+        background: #4ad866;
+        border: none;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        width: 150px;
+        height: 60px;
+        border-radius: 20px;
+      "
+    >
+      mijn notities beheren
+    </a>
+  </section>
+</div>
+{%endblock%}

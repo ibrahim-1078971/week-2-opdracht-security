@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <link rel="stylesheet" href="/static/style.css" />
+
+    <style>
+      :visited {
+        color: black;
+      }
+      .shadow {
+        box-shadow: 0 3px 16px 0 rgba(4, 31, 116, 0.1);
+      }
+      li {
+        width: 700px;
+        height: 150px;
+        padding: 5px;
+
+        list-style-type: none;
+      }
+      * {
+        border-radius: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        top: 55%;
+
+        left: 0%;
+        z-index: 0;
+      "
+    >
+      <img
+        style="
+          width: 95%;
+          border-radius: 20px;
+          height: 2000px;
+          box-shadow: 0 3px 16px 0 rgba(4, 31, 116, 0.1);
+        "
+        src="/static/images/Screenshot 2023-11-26 143001.png"
+        alt=""
+      />
+    </div>
+    <header class="header">
+      {% extends 'navbar.html' %}
+      {% block title %}Notitie lijst{% endblock %}    
+      {% block content %}
+    </header>
+    {%block information%} {%endblock%} {%block text%} {%endblock%} {%block
+    questions_and_answers%} {%endblock%}
+    <section>
+      <form action="{{ url_for('export_csv', note_id=note_id) }}" method="GET">
+        <button
+          type="submit"
+          style="
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 50px;
+          "
+        >
+          Exporteer naar CSV
+        </button>
+        {% endblock %}
+      </form>
+      </section>
+  </body>
+</html>

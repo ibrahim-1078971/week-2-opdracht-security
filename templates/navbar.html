@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default Title{% endblock %}</title>
+</head>
+<body>
+
+
+<header class="header">
+    <a href="#" class="logo"
+      ><img
+        width="12%"
+        style="position: fixed; top: 2%; left: 5%"
+        src="static/images/testcorrect-logo.png"
+    /></a>
+    <nav class="navbar">
+      <a href="/mijn-account">Mijn account</a>
+      <a href="/notities-lijst">Notities</a>
+      <a href="/categorie">Categorie</a>
+      
+      {% if session.is_admin %}
+        <a href="/admin">Admin</a>
+      {% endif %}
+      
+      <a href="{{ url_for('logout') }}">Uitloggen</a>
+    </nav>
+  </header>
+
+  <div id="content">
+        {% block content %}{% endblock %}
+  </div>
+
+
+
+
+
+</body>
+</html>

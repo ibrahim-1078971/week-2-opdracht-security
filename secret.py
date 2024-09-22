@@ -1,0 +1,1 @@
+OPENAI_LICENSE="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"

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <link rel="stylesheet" href="/static/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mijn Account</title>
+
+{% extends 'navbar.html' %}
+{% block title %}Mijn Account{% endblock %}
+        
+        
+  {% block content %}  
+    <style>
+      body {
+        font-family: nunito, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      
+      section {
+        max-width: 600px;
+        margin: 80px auto 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Mijn Account</h1>
+    </header>
+    <section>
+      <h2>Accountgegevens</h2>
+      <p>Gebruikersnaam: {{ username }}</p>
+      <p>Voornaam: {{ display_name }}</p>
+      <p>Email: {{ email }}</p>
+      <p>Categorie: {{ omschrijving }}</p>
+
+      <h2>Bewerk Gegevens</h2>
+      <form method="post" action="{{ url_for('update_user') }}">
+        <label for="new_email">Nieuwe Email:</label>
+        <input
+          type="email"
+          id="new_email"
+          name="new_email"
+          value="{{ email }}"
+          required
+        /><br />
+
+        <!--label for="new_omschrijving">Nieuwe Categorie:</label>
+            <input type="text" id="new_omschrijving" name="new_omschrijving" required><br> -->
+
+        <input type="submit" value="Bijwerken" />
+      </form>
+    </section>
+
+{% endblock %}
+  </body>
+</html>

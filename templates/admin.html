@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+</head>
+<body>
+{% extends 'navbar.html' %}
+{% block title %}Admin Page{% endblock %}
+{% block content %}
+    <h1>Admin Page</h1>
+    <h2>Add Teacher</h2>
+    <form action="{{ url_for('add_teacher') }}" method="post">
+        Display Name: <input type="text" name="display_name" required><br>
+        Username: <input type="text" name="username" required><br>
+        Email: <input type="email" name="email" required><br>
+        Password: <input type="password" name="password" required><br>
+        Admin <input type="checkbox" name="is_admin" value="1"><br>
+        <input type="submit" value="Add Teacher">
+    </form>
+
+    <h2>Teachers</h2>
+    <ul>
+        {% for teacher in teachers %}
+            <li>
+                {{ teacher[1] }} - 
+                <a href="{{ url_for('edit_teacher', teacher_id=teacher[0]) }}">Edit</a> -
+                <a href="{{ url_for('remove_teacher', teacher_id=teacher[0]) }}">Remove</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+</body>
+</html>

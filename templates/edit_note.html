@@ -1,0 +1,122 @@
+{% extends 'note_details_base.html' %} {%block information%}
+<section
+  style="
+    position: absolute;
+    background-color: white;
+
+    width: 400px;
+    height: 250px;
+    top: 110px;
+    left: 100px;
+  "
+  class="shadow"
+>
+  <div style="position: absolute; left: 20px; font-size: 30px">
+    {%for i in title%}
+    <input type="text" value="{{i}}" />
+    {%endfor%}
+  </div>
+
+  <div style="position: absolute; top: 50px; left: 20px">
+    {%for i in teacher%}
+    <p>Gemaakt door: {{i}}</p>
+    {%endfor%}
+  </div>
+
+  <div style="position: absolute; top: 100px; left: 20px">
+    {%for i in source%}
+    <input type="text" value="{{i}}" />
+    {%endfor%}
+  </div>
+
+  <div style="position: absolute; top: 150px; left: 20px">
+    <select name="" id="">
+      {%for category in all_categories%} {%for i in category%}
+      <option value="">{{i}}</option>
+      {%endfor%} {%endfor%}
+    </select>
+  </div>
+
+  <div style="position: absolute; top: 200px; left: 20px">
+    {%for i in date_created%}
+    <p>Gemaakt op: {{i}}</p>
+    {%endfor%}
+  </div>
+</section>
+{%endblock%} {%block text%}
+<section
+  style="position: absolute; left: 550px; align-content: center; top: 110px"
+>
+  <h1 style="text-align: center">Tekst</h1>
+  {%for i in content%}
+  <div
+    style="width: 800px; height: 215px; background-color: white"
+    class="shadow"
+  >
+    <input
+      type="text"
+      value="{{i}}"
+      style="
+        position: relative;
+        left: 20px;
+        top: 20px;
+        width: 760px;
+        word-wrap: break-word;
+        max-height: 175px;
+        overflow-y: scroll;
+      "
+    />
+  </div>
+  {%endfor%}
+</section>
+{%endblock%} {%block questions_and_answers%}
+<section
+  style="
+    color: black;
+    position: absolute;
+    top: 400px;
+
+    display: flex;
+    justify-content: center;
+  "
+>
+  <ul style="margin-right: 20px">
+    <li style="border: none; height: 30px; font-size: 20px; text-align: center">
+      Vraag
+    </li>
+
+    {%for question in questions%} {%for i in question%}
+    <li style="background-color: white; margin-bottom: 20px" class="shadow">
+      <input type="text" value="{{i}}" />
+    </li>
+    {%endfor%} {%endfor%}
+  </ul>
+
+  <ul>
+    <li
+      style="
+        border: none;
+        background: none;
+        height: 30px;
+        font-size: 20px;
+        text-align: center;
+      "
+    >
+      Antwoord
+    </li>
+
+    {%for answer in answers%} {%for i in answer%}
+    <li
+      style="
+        background-color: white;
+
+        margin-bottom: 20px;
+      "
+      class="shadow"
+    >
+      <input type="text" value="{{i}}" />
+    </li>
+    {%endfor%} {%endfor%}
+  </ul>
+</section>
+{%endblock%}

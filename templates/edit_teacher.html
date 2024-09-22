@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Teacher</title>
+</head>
+<body>
+{% extends 'navbar.html' %}
+{% block title %}Admin Page{% endblock %}
+{% block content %}
+    <h1>Edit Teacher</h1>
+    <form action="{{ url_for('edit_teacher', teacher_id=teacher_info['teacher_id']) }}" method="post">
+        Display Name: <input type="text" name="new_display_name" value="{{ teacher_info['display_name'] }}" required><br>
+        Username: <input type="text" name="new_username" value="{{ teacher_info['username'] }}" required><br>
+        Email: <input type="email" name="new_email" value="{{ teacher_info['email'] }}" required><br>
+        Password: <input type="password" name="new_password" required><br>
+        Admin: <input type="checkbox" name="is_admin" {% if teacher_info['is_admin'] %}checked{% endif %}><br>
+        <input type="submit" value="Update Teacher">
+    </form>
+{% endblock %}
+</body>
+</html>

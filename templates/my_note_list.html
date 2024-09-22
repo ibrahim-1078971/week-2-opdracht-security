@@ -1,0 +1,158 @@
+{% extends 'note_list_base.html' %} {%block note_list%}
+<section class="note_list">
+  {%for note in notes%}
+  <ul
+    style="
+      color: black;
+      position: relative;
+      top: -70px;
+      border-radius: 16px;
+      height: 150px;
+    "
+  >
+    <li style="padding: 10px; height: 0px">
+      Titel: {{note[1]}} <br />
+      <br />
+      Categorie: {{note[2]}} <br />
+      <br />
+      Aanmaakdatum: <br />
+      {{note[4]}}
+    </li>
+    <li
+      style="
+        position: relative;
+        left: 400px;
+        width: 500px;
+        height: 100px;
+        overflow-y: scroll;
+      "
+    >
+      {{note[3]}}
+    </li>
+
+    <li
+      style="
+        width: 70px;
+        position: relative;
+        right: 60px;
+        display: flex;
+        position: relative;
+        left: 80%;
+        top: -75px;
+      "
+    >
+      <form action="/mijn-notities" , method="POST" style="display: flex">
+        <button
+          value="{{note.note_id}}"
+          name="detail"
+          style="
+            background: #4ad866;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            display: inline-block;
+            font-size: 12 px;
+            margin: 4px;
+            cursor: pointer;
+            position: relative;
+            left: 8px;
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+          "
+        >
+          details
+        </button>
+
+        <button
+          class="my_notes_options"
+          value="{{note.note_id}}"
+          name="remove_note"
+          onclick="return confirm('Weet u zeker dat u deze notitie wilt verwijderen?')"
+        >
+          <img src="static\images\trash-10-32.png" alt="" />
+        </button>
+
+        <button value="{{note.note_id}}" name="edit" class="my_notes_options">
+          <img src="static\images\edit-2-32.png" alt="" />
+        </button>
+
+        <button
+          class="my_notes_options"
+          name="change_public"
+          value="{{note.note_id}}"
+          type="submit"
+        >
+          <img src="static\images\{{hide_notes[note[5]]}}.png" alt="" />
+        </button>
+      </form>
+    </li>
+  </ul>
+  {%endfor%}
+</section>
+{%endblock%} {%block searchbar%}
+<div class="notities_searchbar">
+  <form
+    action="/mijn-notities"
+    method="POST"
+    style="display: flex; height: 80%"
+  >
+    <section style="display: flex">
+      <p style="position: relative; top: 15px">
+        titel
+        <input
+          type="text"
+          name="title"
+          style="
+            border: 1px solid blue;
+            border-radius: 15px;
+            height: 45px;
+            width: 250px;
+            border-style: solid;
+            font-size: larger;
+          "
+        />
+      </p>
+    </section>
+    <section>
+      <p>categorien</p>
+      <select name="subject" class="select">
+        <option>alle categorien</option>
+        {%for category in categories%}
+        <option>{{category[0]}}</option>
+
+        {%endfor%}
+      </select>
+    </section>
+
+    <input type="submit" value="Zoeken" class="submit-button" />
+  </form>
+  <form
+    action="/mijn-notities"
+    method="POST"
+    style="position: relative; left: 5%"
+  >
+    <button
+      value="1"
+      name="redirect_all_notes"
+      type="submit"
+      style="
+        background: #4ad866;
+        border: none;
+        padding: 16px 0px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        width: 150px;
+        height: 60px;
+        border-radius: 20px;
+      "
+    >
+      Alle notities
+    </button>
+  </form>
+</div>
+{%endblock%}

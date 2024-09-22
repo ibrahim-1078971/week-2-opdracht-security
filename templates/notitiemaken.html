@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="/static/style.css"/>
+    <title>Notitie maken</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+{% extends 'navbar.html' %}
+{% block title %}Categorie{% endblock %} 
+{% block content %}
+<style>
+
+body {
+   height: 100%;
+   overflow-y: hidden;
+}
+
+  div #title {
+    position: absolute;
+    top: 200px;
+    left: 100px;
+    text-align: top;
+  }
+  div #source {
+    position: absolute;
+    top: 250px;
+    left: 100px;
+    text-align: top;
+  }
+  div #note {
+    position: absolute;
+    top: 320px;
+    left: 100px;
+    text-align: top;
+  }
+  div #teachers {
+    position: absolute;
+    top: 215px;
+    right: 505px;
+    text-align: top;
+  }
+  div #subject {
+    position: absolute;
+    top: 275px;
+    right: 505px;
+    text-align: top;
+  }
+  div #save {
+    position: absolute;
+    top: 320px;
+    right: 250px;
+    text-align: top;
+    border: none;
+    color: grey;
+    
+    cursor: pointer;
+    font-size: 16px;
+  }
+  div .notitie_annuleren {
+    position: absolute;
+    top: 380px;
+    right: 250px;
+    text-align: top;
+    border: 2px solid #a5a5b1;
+    color: grey;
+    padding: 15px 32px;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  
+  
+    textarea {
+        resize: none;
+    }
+</style>
+<body> 
+  <div
+      style="
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        top: 23%;
+
+        left: 0%;
+        z-index: 0;
+      "
+    >
+      <img
+        style="
+          width: 95%;
+          border-radius: 20px;
+          height: 800px;
+          box-shadow: 0 3px 16px 0 rgba(4, 31, 116, 0.1);
+        "
+        src="/static/images/Screenshot 2023-11-26 143001.png"
+        alt=""
+      />
+    </div>
+  <div class="notitie-text">
+    <form action="/notitie-maken/opslaan" method="POST">
+      <section>
+        <p id="title">
+        <span style="margin:100px">Titel&nbsp;</span>
+        <textarea name="title" type="text" value="{{ title }}" rows="1" cols="25"></textarea>
+        </p>
+      </section>
+
+      <section>
+        <p id="source">
+        <span style="margin:100px">Bron&nbsp;</span>
+        <textarea name="source" rows="2" cols="22"></textarea>
+        </p>
+      </section>
+      
+      
+      <section>
+        <p id="note">
+        <span style="margin:98px">Tekst&nbsp;</span>
+        <textarea name="note" rows="14" cols="50"></textarea>
+        </p>
+      </section>
+
+      <section>
+        <p id="teachers">
+          Docent <select name="teachers">
+        
+            {% for teacher in teachers %}
+              <option value="{{ teacher.teacher_id}}">{{ teacher.display_name }}</option>
+            {% endfor %}
+      </select>
+        </p>
+      </section>
+
+      <section>
+        <p id="subject">
+          Categorie <select name="subject">
+        
+            {% for category in categories %}
+              <option value="{{ category.category_id }}">{{ category.omschrijving }}</option>
+            {% endfor %}
+          </select>
+          </p>
+      </section>
+        <p id="save">
+          <input type="submit" class="btn btn-primary" value="Opslaan" style="height: 50px; width: 150px; font-size: 16px;"/>
+        </p>
+      </select>
+
+    
+    <button class="notitie_annuleren"><a href="/notities-lijst">Annuleren</a></button>
+  </form>
+  </div>
+
+{% endblock %}
+</body>
+</html>
