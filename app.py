@@ -7,6 +7,7 @@ from flask import Response
 from werkzeug.security import generate_password_hash, check_password_hash  # Voeg deze regel toe
 from lib.sqlite_queries import Testgtp
 from lib.testgpt.testgpt import TestGPT
+import re
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = os.environ.get('FLASK_SECRET_KEY') 
@@ -25,6 +26,9 @@ def is_valid_email(email):
     """check if it has @"""
     return '@' in email
 
+def sanitize_input(input_value):
+    """Sanitize inputs to prevent injection attacks"""
+    return re.sub(r'[^a-zA-Z0-9_/-]', '', input_value)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -54,7 +58,7 @@ def login():
                 # Opslaan van teacher_id in sessie
                 session['user_id'] = result[0]
                 session['is_admin'] = result[1]
-                return redirect(url_for('notities_lijst', user_id=session['user_id']))
+                return redirect(url_for('notities_lijst', user_id=sanitize_input(str(session['user_id']))))
 
         except sqlite3.Error as e:
             print("SQLite error:", e)
@@ -113,9 +117,9 @@ def notities_lijst():
 
     if note_id is not None:
         if 'detail' in request.form:
-            return redirect(f"/details/{note_id}")
+            return redirect(f"/details/{sanitize_input(note_id)}")
         elif 'edit' in request.form:
-            return redirect(f"/edit/{note_id}")
+            return redirect(f"/edit/{sanitize_input(note_id)}")
     try:
         if session['user_id'] is not None:
 
@@ -194,10 +198,10 @@ def my_notes():
             return redirect('/mijn-notities')
 
         if edit_id is not None:
-            return redirect(f"/edit/{edit_id}")
+            return redirect(f"/edit/{sanitize_input(edit_id)}")
 
         if detail_id is not None:
-            return redirect(f"/details/{detail_id}")
+            return redirect(f"/details/{sanitize_input(detail_id)}")
 
         hide_notes = ['hidden', 'public']
 
