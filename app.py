@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import openai
 import csv
@@ -7,7 +8,7 @@ from lib.sqlite_queries import Testgtp
 from lib.testgpt.testgpt import TestGPT
 
 app = Flask(__name__, static_url_path='/static')
-app.secret_key = 'WP2'
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') 
 openai.api_key = ""
 
 DATABASE_FILE = "databases/testgpt.db"
