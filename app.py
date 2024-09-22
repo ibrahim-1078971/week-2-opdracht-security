@@ -4,6 +4,7 @@ import openai
 import csv
 from flask import Flask, redirect, url_for, render_template, request, session
 from flask import Response
+from werkzeug.security import generate_password_hash, check_password_hash  # Voeg deze regel toe
 from lib.sqlite_queries import Testgtp
 from lib.testgpt.testgpt import TestGPT
 
@@ -39,25 +40,21 @@ def login():
 
             if is_valid_email(input_value):
                 # Invoer is e-mailadres
-                query = "SELECT teacher_id, is_admin username,\
-                      teacher_password FROM teachers WHERE email = ? AND teacher_password = ?"
+                query = "SELECT teacher_id, is_admin, teacher_password FROM teachers WHERE email = ?"
             else:
                 # Invoer is gebruikersnaam
-                query = "SELECT teacher_id, is_admin, username,\
-                      teacher_password FROM teachers WHERE username = ? AND teacher_password = ?"
+                query = "SELECT teacher_id, is_admin, teacher_password FROM teachers WHERE username = ?"
 
-            cursor.execute(query, (input_value, password))
+            cursor.execute(query, (input_value,))
             result = cursor.fetchone()
 
-            if result is None:
-                error_message = "Inloggegevens incorrect.\
-                      De combinatie van het opgegeven e-mailadres en wachtwoord klopt niet,\
-                          of er bestaat geen account met dit e-mailadres."
+            if result is None or not check_password_hash(result[2], password):
+                error_message = "Inloggegevens incorrect. De combinatie van het opgegeven e-mailadres en wachtwoord klopt niet, of er bestaat geen account met dit e-mailadres."
             else:
                 # Opslaan van teacher_id in sessie
                 session['user_id'] = result[0]
                 session['is_admin'] = result[1]
-                return redirect(url_for('notitis_lijst', user_id=session['user_id']))
+                return redirect(url_for('notities_lijst', user_id=session['user_id']))
 
         except sqlite3.Error as e:
             print("SQLite error:", e)
@@ -464,11 +461,10 @@ def add_teacher():
         display_name = request.form.get('display_name')
         username = request.form.get('username')
         email = request.form.get('email')
-        password = request.form.get('password')
+        password = generate_password_hash(request.form.get('password'))  # Hash het wachtwoord
         is_admin = int(request.form.get('is_admin', 0))
         sqlite_queries = Testgtp(DATABASE_FILE)
-        sqlite_queries.insert_teacher(
-            display_name, username, email, password, is_admin)
+        sqlite_queries.insert_teacher(display_name, username, email, password, is_admin)
 
     return redirect(url_for('admin'))
 
@@ -489,11 +485,10 @@ def edit_teacher(teacher_id):
         new_display_name = request.form['new_display_name']
         new_username = request.form['new_username']
         new_email = request.form['new_email']
-        new_password = request.form['new_password']
+        new_password = generate_password_hash(request.form['new_password'])  # Hash het nieuwe wachtwoord
         is_admin = 'is_admin' in request.form
 
-        sqlite_queries.update_teacher(
-            teacher_id, new_display_name, new_username, new_email, new_password, is_admin)
+        sqlite_queries.update_teacher(teacher_id, new_display_name, new_username, new_email, new_password, is_admin)
 
         return redirect(url_for('admin'))
 
