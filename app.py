@@ -10,6 +10,11 @@ from lib.testgpt.testgpt import TestGPT
 import re
 
 app = Flask(__name__, static_url_path='/static')
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True,
+    SESSION_PERMANENT=False,
+)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY') 
 openai.api_key = ""
 
