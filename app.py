@@ -50,6 +50,16 @@ def create_jwt_token(user_id, is_admin):
     token = jwt.encode(payload, JWT_SECRET_KEY, algorithm='HS256')
     return token
 
+def verify_jwt_token(token):
+    """JWT-token verificatie functie"""
+    try:
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None  # Token is verlopen
+    except jwt.InvalidTokenError:
+        return None  # Ongeldig token
+
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -98,6 +108,9 @@ def login():
 @app.route('/notities-lijst', methods=['GET', 'POST'])
 def notities_lijst():
     """This is the page where all public notes can be seen"""
+
+    if 'jwt_token' not in session or verify_jwt_token(session['jwt_token']) is None:
+        return render_template('unauthorized.html')
 
     subject = request.form.get('subject')
     teacher = request.form.get('teachers')
@@ -166,6 +179,9 @@ def notities_lijst():
 @app.route('/mijn-notities', methods=['GET', 'POST'])
 def my_notes():
     """This is the page where notes of the logged on teacher can be seen"""
+
+    if 'jwt_token' not in session or verify_jwt_token(session['jwt_token']) is None:
+        return render_template('unauthorized.html')
 
     try:
         subject = request.form.get('subject')
@@ -247,8 +263,12 @@ def my_notes():
 @app.route('/edit/<note_id>')
 def edit_note(note_id):
     """This is the page where notes can be edited
+    
 
     note_id = int"""
+
+    if 'jwt_token' not in session or verify_jwt_token(session['jwt_token']) is None:
+        return render_template('unauthorized.html')
 
     try:
         title = sqlite_queries.get_note_information('title', note_id)
@@ -347,6 +367,9 @@ def vraag_genereren(note_id):
 
 @app.route("/notitie-maken", methods=['GET', 'POST'])
 def notitie_maken():
+
+    if 'jwt_token' not in session or verify_jwt_token(session['jwt_token']) is None:
+        return render_template('unauthorized.html')
     """notitie maken route"""
     teachers = sqlite_queries.get_teacher_id()
     categories = sqlite_queries.get_category_id()
@@ -403,6 +426,9 @@ def haal_gebruikersgegevens_op():
 
 @app.route("/mijn-account")
 def instellingen():
+
+    if 'jwt_token' not in session or verify_jwt_token(session['jwt_token']) is None:
+        return render_template('unauthorized.html')
     """rederict naar mijn account"""
     gebruikersgegevens = haal_gebruikersgegevens_op()
     return render_template('mijnaccount.html', **gebruikersgegevens)
