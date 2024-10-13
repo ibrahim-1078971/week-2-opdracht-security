@@ -39,6 +39,18 @@ def sanitize_input(input_value):
     """Sanitize inputs to prevent injection attacks"""
     return re.sub(r'[^a-zA-Z0-9_/-]', '', input_value)
 
+def create_jwt_token(user_id, is_admin):
+    """JWT-token aanmaak functie"""
+    expiration_time = datetime.utcnow() + timedelta(hours=1)
+    payload = {
+        'user_id': user_id,
+        'is_admin': is_admin,
+        'exp': expiration_time
+    }
+    token = jwt.encode(payload, JWT_SECRET_KEY, algorithm='HS256')
+    return token
+
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     """ login pagina"""
@@ -64,7 +76,11 @@ def login():
             if result is None or not check_password_hash(result[2], password):
                 error_message = "Inloggegevens incorrect. De combinatie van het opgegeven e-mailadres en wachtwoord klopt niet, of er bestaat geen account met dit e-mailadres."
             else:
-                # Opslaan van teacher_id in sessie
+                # Gebruiker is geverifieerd, maak JWT-token aan
+                token = create_jwt_token(result[0], result[1])
+
+                # Sla het token op in de sessie
+                session['jwt_token'] = token
                 session['user_id'] = result[0]
                 session['is_admin'] = result[1]
                 return redirect(url_for('notities_lijst', user_id=sanitize_input(str(session['user_id']))))
