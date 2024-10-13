@@ -2,6 +2,8 @@ import os
 import sqlite3
 import openai
 import csv
+import jwt
+from datetime import datetime, timedelta
 from flask import Flask, redirect, url_for, render_template, request, session
 from flask import Response
 from werkzeug.security import generate_password_hash, check_password_hash  # Voeg deze regel toe
@@ -17,6 +19,8 @@ app.config.update(
 )
 app.secret_key = os.environ.get('FLASK_SECRET_KEY') 
 openai.api_key = ""
+JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'secret')
+
 
 DATABASE_FILE = "databases/testgpt.db"
 sqlite_queries = Testgtp(DATABASE_FILE)
